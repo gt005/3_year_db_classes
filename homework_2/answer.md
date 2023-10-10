@@ -144,11 +144,14 @@ Borrow }o--|| Copy: borrows
 @enduml
 
 ## Задание 2
+
+Изначально, так как просили смоделировать только эти схемы, то я на draw.io сделал модели. И для третьего задания я изначально реализовал эти три модели в диаграммы, так как не совсем было ясно, откуда брать модель для реализации в третьем. Но раз сделал, оставлю уже.
+
 ![](images/task2.png)
 
-## Задание 3
-
 ### Пункт 1
+
+Тут связи все mandatory, так как по заданию дом уже стоит, поэтому хотя бы одна связь должна быть.
 ```
 @startuml
 entity Flat {
@@ -181,10 +184,10 @@ entity Country {
   name: text
 }
 
-Flat }o--|| House: located
-House }o--|| Street: located
-Street }o--|| Town: located
-Town }o--|| Country: located
+Flat }|--|| House: located
+House }|--|| Street: located
+Street }|--|| Town: located
+Town }|--|| Country: located
 @enduml
 ```
 @startuml
@@ -218,19 +221,22 @@ entity Country {
   name: text
 }
 
-Flat }o--|| House: located
-House }o--|| Street: located
-Street }o--|| Town: located
-Town }o--|| Country: located
+Flat }|--|| House: located
+House }|--|| Street: located
+Street }|--|| Town: located
+Town }|--|| Country: located
 @enduml
 
 ### Пункт 2
+Тут, естественно, некоторые связи могли быть не обязательными, но по заданию, матч уже идет, поэтому некоторые связи жесткие.
+
 ```
 @startuml
 
 entity Player {
   * id: number <<generated>>
   ---
+  team_id: number <<FK>>
   name: text
   birthdate: date
 }
@@ -252,13 +258,15 @@ entity Match {
   * date: date
   location: text
   ---
-  team_id: number <<FK>>
-  referee_id: number <<FK>>
+  * team1_id: number
+  * team2_id: number
+  * referee_id: number
 }
 
-Team }o--o{ Player: has
-Match }|--|{ Team: played_by
-Match }|--|| Referee: officiated_by
+Team ||--|{ Player: has
+Match ||--|| Team: played_by_1_team
+Match ||--|| Team: played_by_2_team
+Match ||--|| Referee: officiated_by
 
 @enduml
 ```
@@ -267,6 +275,7 @@ Match }|--|| Referee: officiated_by
 entity Player {
   * id: number <<generated>>
   ---
+  team_id: number <<FK>>
   name: text
   birthdate: date
 }
@@ -288,13 +297,15 @@ entity Match {
   * date: date
   location: text
   ---
-  team_id: number <<FK>>
-  referee_id: number <<FK>>
+  * team1_id: number
+  * team2_id: number
+  * referee_id: number
 }
 
-Team }o--o{ Player: has
-Match }|--|{ Team: played_by
-Match }|--|| Referee: officiated_by
+Team ||--|{ Player: has
+Match ||--|| Team: played_by_1_team
+Match ||--|| Team: played_by_2_team
+Match ||--|| Referee: officiated_by
 
 @enduml
 
@@ -334,3 +345,85 @@ Person ||--o{ Person: isFatherOf
 
 @enduml
 
+
+
+## Задание 3
+
+Я тут добавил Enum, потому что мне интересно, как это делается на схемах бд. Потому что, с точки зрения реализации, понимаю что он тут будет, но как его тут показать, интересно будет узнать. Вроде в инете пишут, что так.
+
+```
+@startuml
+
+entity Entity {
+    * id: number <<generated>>
+    ---
+    * name: text
+}
+
+entity Interaction {
+    * id: number <<generated>>
+    ---
+    * relation_type: RelationType
+    * source_entity_id: number <<FK>>
+    * target_entity_id: number <<FK>>
+    name: text
+}
+
+entity Attribute {
+    * id: number <<generated>>
+    ---
+    * entity_id: number <<FK>>
+    name: text
+    type: text
+}
+
+class RelationType <<enumeration>> {
+    Zero or One
+    Exactly One
+    Zero or Many
+    One or Many
+}
+
+Entity }|--o{ Interaction
+Entity ||--o{ Attribute
+Interaction ||--|| RelationType
+
+@enduml
+```
+@startuml
+
+entity Entity {
+    * id: number <<generated>>
+    ---
+    * name: text
+}
+
+entity Interaction {
+    * id: number <<generated>>
+    ---
+    * relation_type: RelationType
+    * source_entity_id: number <<FK>>
+    * target_entity_id: number <<FK>>
+    name: text
+}
+
+entity Attribute {
+    * id: number <<generated>>
+    ---
+    * entity_id: number <<FK>>
+    name: text
+    type: text
+}
+
+class RelationType <<enumeration>> {
+    Zero or One
+    Exactly One
+    Zero or Many
+    One or Many
+}
+
+Entity }|--o{ Interaction
+Entity ||--o{ Attribute
+Interaction ||--|| RelationType
+
+@enduml
