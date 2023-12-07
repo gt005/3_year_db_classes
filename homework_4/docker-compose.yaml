@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db1:
+    image: postgres:14.5
+    environment:
+      POSTGRES_DB: khamid_214
+      POSTGRES_USER: khamid_214
+      POSTGRES_PASSWORD: khamid_214
+    volumes:
+      - ./docker/db/config/khamid_214/postgresql1.conf:/etc/postgresql/postgresql.conf
+      - ./docker/db/scripts/khamid_214/create_db1.sql:/docker-entrypoint-initdb.d/create_db.sql
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    ports:
+      - "5432:5432"
+
+  db2:
+    image: postgres:14.5
+    environment:
+      POSTGRES_DB: khamid_214
+      POSTGRES_USER: khamid_214
+      POSTGRES_PASSWORD: khamid_214
+    volumes:
+      - ./docker/db/config/khamid_214/postgresql2.conf:/etc/postgresql/postgresql.conf
+      - ./docker/db/scripts/khamid_214/create_db2.sql:/docker-entrypoint-initdb.d/create_db.sql
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    ports:
+      - "5433:5433"
+
+  db3:
+    image: postgres:14.5
+    environment:
+      POSTGRES_DB: khamid_214
+      POSTGRES_USER: khamid_214
+      POSTGRES_PASSWORD: khamid_214
+    volumes:
+      - ./docker/db/config/khamid_214/postgresql3.conf:/etc/postgresql/postgresql.conf
+      - ./docker/db/scripts/khamid_214/create_db3.sql:/docker-entrypoint-initdb.d/create_db.sql
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    ports:
+      - "5434:5434"
