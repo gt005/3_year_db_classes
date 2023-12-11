@@ -175,7 +175,7 @@ Table Has {
 
 Для запуска контейнеров, достаточно прописать 
 ```
-docker compose up --build
+docker compose up -d --build
 ```
 Для остановки
 ```
